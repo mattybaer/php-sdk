@@ -29,16 +29,8 @@ class AccountService extends BaseService
     {
         $baseUrl = Config::get('endpoints.base_url') . Config::get('endpoints.account_verified_addresses');
 
-        $request = parent::createBaseRequest($accessToken, 'GET', $baseUrl);
-        if ($params) {
-            $query = $request->getQuery();
-            foreach ($params as $name => $value) {
-                $query->add($name, $value);
-            }
-        }
-
-        try {
-            $response = parent::getClient()->send($request);
+	    try {
+	        $response = parent::sendRequestWithBody($accessToken, 'GET', $baseUrl, $params);
         } catch (ClientException $e) {
             throw parent::convertException($e);
         }
@@ -91,10 +83,8 @@ class AccountService extends BaseService
     {
         $baseUrl = Config::get('endpoints.base_url') . Config::get('endpoints.account_info');
 
-        $request = parent::createBaseRequest($accessToken, 'GET', $baseUrl);
-
         try {
-            $response = parent::getClient()->send($request);
+	    	$response = parent::sendRequestWithoutBody($accessToken, 'GET', $baseUrl);
         } catch (ClientException $e) {
             throw parent::convertException($e);
         }
